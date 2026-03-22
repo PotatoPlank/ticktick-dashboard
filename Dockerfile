@@ -67,5 +67,4 @@ RUN npm install && npm run build
 
 
 # Set permissions
-RUN chown -R www-data:www-data /app/storage
 RUN chmod -R 775 /app/storage
