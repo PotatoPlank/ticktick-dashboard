@@ -1,3 +1,12 @@
+# Stage 1: Build front-end assets
+FROM node:alpine as node_build
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Stage 2: PHP and backend setu
 FROM dunglas/frankenphp:1-php8.4
 
 WORKDIR /app
@@ -59,3 +68,12 @@ RUN set -eux; \
 #		php bin/console asset-map:compile; \
 #	fi; \
 #	chmod +x bin/console; sync;
+
+
+# Copy compiled assets from the node_build stage
+COPY --from=node_build /usr/src/app/public/build /var/www/html/public/build
+COPY --from=node_build /usr/src/app/node_modules /var/www/html/node_modules
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html/storage
+RUN chmod -R 775 /var/www/html/storage
