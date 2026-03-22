@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "/usr/bin/php",
+      "args": [
+        "/home/jduell/code/active_projects/ticktick-dashboard/artisan",
+        "boost:mcp"
+      ]
+    }
+  }
+}

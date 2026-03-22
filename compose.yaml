@@ -1,0 +1,31 @@
+services:
+    php:
+        container_name: ticktick-dashboard
+        build: .
+        #restart: always # disable during development
+        ports:
+            - "80:80" # HTTP
+            - "443:443" # HTTPS
+            - "443:443/udp" # HTTP/3
+        volumes:
+            - caddy_data:/data
+            - caddy_config:/config'
+            - ./database/database.sqlite:/app/database/database.sqlite:rw # SQLite persistent storage
+        tty: true # Disable in production, enables readable logs
+        environment:
+            #SERVER_NAME: :80 # Enable for reverse proxy setup
+            TICKTICK_TOKEN: ticktick_token
+            APP_URL: http://localhost:80
+            APP_DEBUG: false # Enable for development
+            APP_KEY: app_key # Generate with `php artisan key:generate`
+            #POCKETID_URL: # Populate to enable PocketID authentication login
+            #POCKETID_REDIRECT_URI:
+            #POCKETID_CLIENT_ID:
+            #POCKETID_CLIENT_SECRET:
+
+
+
+# Volumes needed for Caddy certificates and configuration
+volumes:
+    caddy_data:
+    caddy_config:
