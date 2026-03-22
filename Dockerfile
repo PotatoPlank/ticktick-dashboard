@@ -39,11 +39,12 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # prevent the reinstallation of vendors at every changes in the source code
 COPY --link composer.* symfony.* ./
-RUN set -eux; \
-	composer install --no-cache --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress
 
 # copy sources
 COPY --link --exclude=frankenphp/ . ./
+
+RUN set -eux; \
+	composer install --no-cache --prefer-dist --no-dev --no-progress
 
 RUN npm install && npm run build
 
