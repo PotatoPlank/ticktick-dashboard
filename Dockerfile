@@ -43,12 +43,12 @@ RUN set -eux; \
 # copy sources
 COPY --link --exclude=frankenphp/ . ./
 
-#RUN set -eux; \
-#	mkdir -p var/cache var/log var/share; \
-#	composer dump-autoload --classmap-authoritative --no-dev; \
-#	if [ -f importmap.php ]; then \
-#		php bin/console asset-map:compile; \
-#	fi; \
+RUN set -eux; \
+	mkdir -p var/cache var/log var/share; \
+	composer dump-autoload --classmap-authoritative --no-dev; \
+	if [ -f importmap.php ]; then \
+		php bin/console asset-map:compile; \
+	fi; \
 
 #RUN set -eux; \
 #	mkdir -p var/cache var/log var/share; \

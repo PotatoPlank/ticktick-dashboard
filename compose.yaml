@@ -1,7 +1,7 @@
 services:
     php:
         container_name: ticktick-dashboard
-        build: .
+        image: ghcr.io/potatoplank/feed-digest:latest
         #restart: always # disable during development
         ports:
             - "80:80" # HTTP
