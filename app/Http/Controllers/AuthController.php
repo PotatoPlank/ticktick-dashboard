@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,12 @@ class AuthController extends Controller
 
     public function callback(): RedirectResponse
     {
-        $user = Socialite::driver('pocketid')->user();
+        try{
+            $user = Socialite::driver('pocketid')->user();
+        }catch(InvalidStateException){
+            return Socialite::driver('pocketid')->redirect();
+        }
+
 
         if (! ($user->getRaw()['email_verified'] ?? false)) {
             abort(403, 'Email not verified.');
