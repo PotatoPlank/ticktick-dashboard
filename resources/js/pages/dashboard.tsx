@@ -131,13 +131,11 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
                                             />
                                         )}
 
-                                        {hasTodayTasks && (
-                                            <Tab
-                                                label="📋 Today"
-                                                value="4"
-                                                sx={{ color: 'white' }}
-                                            />
-                                        )}
+                                        <Tab
+                                            label="📋 Today"
+                                            value="4"
+                                            sx={{ color: 'white' }}
+                                        />
                                         {hasOverdue && (
                                             <Tab
                                                 label="⏰ Overdue"
@@ -212,7 +210,9 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
                     </>
                 ) : (
                     <div className="flex flex-col items-center justify-center p-8">
-                        <p className="text-lg font-medium text-gray-500 dark:text-gray-400">No active tasks found!</p>
+                        <p className="text-lg font-medium text-gray-500 dark:text-gray-400">
+                            No active tasks found!
+                        </p>
                     </div>
                 )}
             </div>

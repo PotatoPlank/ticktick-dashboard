@@ -99,6 +99,6 @@ class TickTickTask extends Model
 
     public function scopeDueAllDay(Builder $query): void
     {
-        $query->where('is_all_day', '1')->whereDate('due_date', '<', today());
+        $query->where('is_all_day', '1');
     }
 }
