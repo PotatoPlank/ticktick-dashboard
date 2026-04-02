@@ -22,7 +22,7 @@ type Props = {
     task_count?: number;
 };
 
-export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_tasks, evening_tasks, afternoon_tasks, task_count }: Props) {
+export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_tasks, evening_tasks, afternoon_tasks, task_count, habits }: Props) {
     const [value, setValue] = useState('0');
     const hasMorningTasks =
         morning_tasks !== undefined && morning_tasks.length > 0;
@@ -53,6 +53,23 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
+    };
+
+    const morningHabits = {
+        habits: habits?.morning ?? [],
+        length: habits?.morning ? Object.keys(habits?.morning).length : 0,
+    };
+    const afterNoonHabits = {
+        habits: habits?.afternoon ?? [],
+        length: habits?.afternoon ? Object.keys(habits.afternoon).length : 0,
+    };
+    const eveningHabits = {
+        habits: habits?.evening ?? [],
+        length: habits?.evening ? Object.keys(habits?.evening).length : 0,
+    };
+    const allHabits = {
+        habits: habits?.all_day ?? [],
+        length: habits?.all_day ? Object.keys(habits?.all_day).length : 0,
     };
 
     return (
@@ -147,6 +164,15 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
                                 </Box>
                                 <TabPanel value="1" className="text-white">
                                     <div className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
+                                        {morningHabits.length > 0 &&
+                                            morningHabits.habits.map(
+                                                (habit) => (
+                                                    <TaskRow
+                                                        key={habit.id}
+                                                        task={habit}
+                                                    />
+                                                ),
+                                            )}
                                         {hasMorningTasks &&
                                             morning_tasks.map((task) => (
                                                 <TaskRow
@@ -158,6 +184,15 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
                                 </TabPanel>
                                 <TabPanel value="2" className="text-white">
                                     <div className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
+                                        {afterNoonHabits.length > 0 &&
+                                            afterNoonHabits.habits.map(
+                                                (habit) => (
+                                                    <TaskRow
+                                                        key={habit.id}
+                                                        task={habit}
+                                                    />
+                                                ),
+                                            )}
                                         {hasAfterNoonTasks &&
                                             afternoon_tasks.map((task) => (
                                                 <TaskRow
@@ -169,6 +204,15 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
                                 </TabPanel>
                                 <TabPanel value="3" className="text-white">
                                     <div className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
+                                        {eveningHabits.length > 0 &&
+                                            eveningHabits.habits.map(
+                                                (habit) => (
+                                                    <TaskRow
+                                                        key={habit.id}
+                                                        task={habit}
+                                                    />
+                                                ),
+                                            )}
                                         {hasEveningTasks &&
                                             evening_tasks.map((task) => (
                                                 <TaskRow
@@ -180,6 +224,15 @@ export default function Dashboard({ stats, today_tasks, overdue_tasks, morning_t
                                 </TabPanel>
                                 <TabPanel value="4" className="text-white">
                                     <div className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
+                                        {allHabits.length > 0 &&
+                                            allHabits.habits.map(
+                                                (habit) => (
+                                                    <TaskRow
+                                                        key={habit.id}
+                                                        task={habit}
+                                                    />
+                                                ),
+                                            )}
                                         {today_tasks === undefined ? (
                                             <SkeletonTaskList />
                                         ) : today_tasks.length === 0 ? (

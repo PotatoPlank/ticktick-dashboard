@@ -15,6 +15,8 @@ services:
         environment:
             #SERVER_NAME: :80 # Enable for reverse proxy setup
             TICKTICK_TOKEN: ticktick_token
+            TICKTICK_USERNAME: ticktick_user # Used for Habits only
+            TICKTICK_PASSWORD: ticktick_password # Used for Habits only
             APP_URL: http://localhost:80
             APP_DEBUG: false # Enable for development
             APP_KEY: app_key # Generate with `php artisan key:generate`

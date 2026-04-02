@@ -3,7 +3,8 @@
     "allow": [
       "Bash(php artisan:*)",
       "Bash(vendor/bin/pint:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(git stash:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

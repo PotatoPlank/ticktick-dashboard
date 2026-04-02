@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TickTickHabit;
 use App\Models\TickTickTask;
+use App\Services\TickTick\TickTickUserClient;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, TickTickUserClient $client)
     {
         return Inertia::render('dashboard', [
             'stats' => Inertia::defer(static fn () => [
@@ -19,6 +21,42 @@ class DashboardController extends Controller
                     ->where('completed_time', '>=', now()->startOfWeek())
                     ->count(),
             ]),
+            'habits' => Inertia::defer(static function () {
+                $habits = TickTickHabit::all()->filter(static fn ($habit) => ! $habit->completed);
+                $now = now('America/New_York');
+                $morningStart = $now->setTime(0, 0);
+                $morningEnd = $now->setTime(11, 59);
+                $afternoonStart = $now->setTime(12, 0);
+                $afternoonEnd = $now->setTime(16, 59);
+                $eveningStart = $now->setTime(17, 00);
+                $eveningEnd = $now->setTime(23, 59);
+                $morningHabits = $habits
+                    ->filter(
+                        static fn ($habit) => $habit->remindAt->reduce(
+                            static fn ($carry, $reminderDate) => $carry || $reminderDate->isBetween($morningStart, $morningEnd), false
+                        )
+                    );
+
+                $afternoonHabits = $habits
+                    ->filter(
+                        static fn ($habit) => $habit->remindAt->reduce(
+                            static fn ($carry, $reminderDate) => $carry || $reminderDate->isBetween($afternoonStart, $afternoonEnd), false
+                        )
+                    );
+                $eveningHabits = $habits
+                    ->filter(
+                        static fn ($habit) => $habit->remindAt->reduce(
+                            static fn ($carry, $reminderDate) => $carry || $reminderDate->isBetween($eveningStart, $eveningEnd), false
+                        )
+                    );
+
+                return [
+                    'morning' => $morningHabits->values(),
+                    'afternoon' => $afternoonHabits->values(),
+                    'evening' => $eveningHabits->values(),
+                    'all_day' => $habits->values(),
+                ];
+            }),
             'today_tasks' => Inertia::defer(static function () {
                 return TickTickTask::query()
                     ->active()
@@ -35,6 +73,7 @@ class DashboardController extends Controller
                     ->dueMorning()
                     ->with('project')
                     ->orderBy('priority', 'desc')
+                    ->orderBy('due_date')
                     ->get();
             }
             ),
@@ -48,6 +87,7 @@ class DashboardController extends Controller
                     ->dueAfterNoon()
                     ->with('project')
                     ->orderBy('priority', 'desc')
+                    ->orderBy('due_date')
                     ->get();
             }
             ),
@@ -61,6 +101,7 @@ class DashboardController extends Controller
                     ->dueEvening()
                     ->with('project')
                     ->orderBy('priority', 'desc')
+                    ->orderBy('due_date')
                     ->get();
             }
             ),

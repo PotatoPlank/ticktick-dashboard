@@ -37,12 +37,14 @@ return [
 
     'ticktick' => [
         'token' => env('TICKTICK_TOKEN'),
+        'username' => env('TICKTICK_USERNAME'),
+        'password' => env('TICKTICK_PASSWORD'),
         'base_url' => env('TICKTICK_BASE_URL', 'https://ticktick.com'),
     ],
     'pocketid' => [
-        'base_url'     => env('POCKETID_URL'),
-        'client_id'     => env('POCKETID_CLIENT_ID'),
+        'base_url' => env('POCKETID_URL'),
+        'client_id' => env('POCKETID_CLIENT_ID'),
         'client_secret' => env('POCKETID_CLIENT_SECRET'),
-        'redirect'      => env('POCKETID_REDIRECT_URI'),
+        'redirect' => env('POCKETID_REDIRECT_URI'),
     ],
 ];
